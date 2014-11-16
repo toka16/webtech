@@ -9,48 +9,29 @@ function Server(router){
 				response.writeHead(404, {});
 				response.end("no such address");
 			}else{
-				if(request.method === "GET"){
-					if(obj.callback.get === undefined){
-						if(obj.errorHandler === undefined){
-							response.writeHead(404, {});
-							response.end();
-						}else{
-							obj.errorHandler("GET method not suported", request, response);
-						}
-					}else{
+				try{
+					if(request.method === "GET"){
 						obj.callback.get(request, response, obj.parametres);
-					}
-				}else if(request.method === "POST"){
-					if(obj.callback.post === undefined){
-						if(obj.errorHandler === undefined){
-							response.writeHead(404, {});
-							response.end();
-						}else{
-							obj.errorHandler("POST method not suported", request, response);
-						}
-					}else{
+					}else if(request.method === "POST"){
 						obj.callback.post(request, response, obj.parametres);
-					}
-				}else if(request.method === "DELETE"){
-					if(obj.callback.delete === undefined){
-						if(obj.errorHandler === undefined){
-							response.writeHead(404, {});
-							response.end();
-						}else{
-							obj.errorHandler("DELETE method not suported", request, response);
-						}
-					}else{
+					}else if(request.method === "DELETE"){
 						obj.callback.delete(request, response, obj.parametres);
+					}
+				}catch(e){
+					if(obj.errorHandler === undefined){
+						response.writeHead(404, {});
+						response.end();
+					}else{
+						obj.errorHandler(e, request, response);
 					}
 				}
 			}
 		});
-		try{
-			server.listen(port);
-			return 0;
-		}catch(e){
-			return -1;
-		}
+		server.on("error", function(e){
+			console.log("error occurred while starting server!");
+			console.log(e);
+		});
+		server.listen(port);
 	};
 }
 

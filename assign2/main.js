@@ -15,14 +15,14 @@ router.add("/users/{id:n}/{permName:s}",
 			},
 			function(error, request, response){
 				response.writeHead(404, {});
-				response.end(error);
+				response.end(error.toString());
 			})
 		.add("/", {
-					get: function(request, response, params){
-						response.writeHead(200, {"Content-Type": "text/html"});
-						response.write("wellcome to my server");
-						response.end();
-					},
+					// get: function(request, response, params){
+					// 	response.writeHead(200, {"Content-Type": "text/html"});
+					// 	response.write("wellcome to my server");
+					// 	response.end();
+					// },
 					post: function(request, response, params){
 						response.writeHead(200, {"Content-Type": "text/html"});
 						response.end("POST not suported");
@@ -34,7 +34,7 @@ router.add("/users/{id:n}/{permName:s}",
 				},
 				function(error, request, response){
 					response.writeHead(404, {});
-					response.end(error);
+					response.end(error.toString());
 				})
 		.add("/download/{name:s}/{type:s}",
 				{
@@ -64,13 +64,9 @@ router.add("/users/{id:n}/{permName:s}",
 				},
 				function(error, request, response){
 					response.writeHead(404, {});
-					response.end(error);
+					response.end(error.toString());
 				}
 		);
 
 var server = new Server(router);
-if(server.startAt(4444) === 0){
-	console.log("server started");
-}else{
-	console.log("error");
-}
+server.startAt(55555);
